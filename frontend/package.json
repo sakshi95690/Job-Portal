@@ -265,7 +265,7 @@
     "sonner": "^1.5.0",
     "source-map-js": "^1.2.0",
     "string-width": "^5.1.2",
-    "string-width-cjs": "^4.2.3",
+    "string-width-cjs": "*",
     "string.prototype.matchall": "^4.0.11",
     "string.prototype.trim": "^1.2.9",
     "string.prototype.trimend": "^1.0.8",
