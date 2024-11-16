@@ -9,9 +9,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-   build: {
-    rollupOptions: {
-      external: ['@radix-ui/react-slot'], // Add this line
-    },
-  },
+  
 })
