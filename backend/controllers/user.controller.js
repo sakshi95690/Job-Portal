@@ -118,8 +118,8 @@ export const updateProfile = async (req, res) => {
         const file = req.file;
         
         // cloudinary ayega idhar
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        // const fileUri = getDataUri(file);
+        // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
 
 
@@ -143,10 +143,19 @@ export const updateProfile = async (req, res) => {
         if(bio) user.profile.bio = bio
         if(skills) user.profile.skills = skillsArray
       
-        // resume comes later here...
-        if(cloudResponse){
-            user.profile.resume = cloudResponse.secure_url // save the cloudinary url
-            user.profile.resumeoriginalname = file.originalname // Save the original file name
+         // Handle resume upload
+        if (file) {
+            const fileUri = getDataUri(file);
+            console.log("File URI:", fileUri); // Log the URI to ensure it's correct
+            const cloudResponse = await cloudinary.uploader.upload(fileUri.content,{
+                resource_type: "auto" 
+            }); // Upload to Cloudinary
+            console.log("Cloudinary Response:", cloudResponse); // Log the response from Cloudinary
+            
+            // Save the Cloudinary URL and original name
+            user.profile.resume = cloudResponse.secure_url; 
+            console.log("Uploaded Resume URL:", cloudResponse.secure_url);
+            user.profile.resumeOriginalName = file.originalname; 
         }
 
 
@@ -168,5 +177,9 @@ export const updateProfile = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "An error occurred while updating the profile.",
+            success: false
+        });
     }
 }
